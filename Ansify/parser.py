@@ -12,3 +12,10 @@ class Parser(object):
                 return f.read()
         except IOError:
             print "File not found"
+
+
+    def find_index_of_substring(self, substring):
+    	begin_index = self.text.find(substring)
+    	end_index = begin_index + begin_index + len(substring)
+    	return (begin_index, end_index)
+

@@ -14,3 +14,7 @@ class ParserTest(unittest.TestCase):
     def test_init_error_handling(self):
     	ParserTest.instance = p.Parser('file_not_here')
         self.assertRaises(IOError, ParserTest.instance.text)
+
+    def test_find_index_of_substring(self):
+    	self.assertEqual((491,491 + len('FROM')), ParserTest.instance.find_index_of_substring('FROM'))
+
