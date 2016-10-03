@@ -12,12 +12,13 @@ class SQLParserTest(unittest.TestCase):
         self.assertEqual(1167, len(SQLParserTest.instance.text))
 
     def test_init_error_handling(self):
-    	SQLParserTest.instance = p.SQLParser('file_not_here')
+        SQLParserTest.instance = p.SQLParser('file_not_here')
         self.assertRaises(IOError, SQLParserTest.instance.text)
 
     def test_index_of_substring_from(self):
-    	self.assertEqual((491,491 + len('FROM')), SQLParserTest.instance.index_of_substring('FROM'))
+        self.assertEqual((491, 491 + len('FROM')),
+                         SQLParserTest.instance.substring_location('FROM'))
 
     def test_index_of_substring_where(self):
-        self.assertEqual((886, 886 + len('WHERE')),SQLParserTest.instance.index_of_substring('WHERE'))
-
+        self.assertEqual((886, 886 + len('WHERE')),
+                         SQLParserTest.instance.substring_location('WHERE'))
