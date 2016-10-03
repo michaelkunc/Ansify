@@ -13,9 +13,7 @@ class SQLParser(object):
         except IOError:
             print "File not found"
 
-
     def index_of_substring(self, substring):
-    	begin_index = self.text.find(substring)
-    	end_index = begin_index + len(substring)
-    	return (begin_index, end_index)
-
+        begin_index = self.text.find(substring)
+        end_index = begin_index + len(substring)
+        return (begin_index, end_index)

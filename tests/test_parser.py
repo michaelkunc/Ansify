@@ -15,6 +15,9 @@ class SQLParserTest(unittest.TestCase):
     	SQLParserTest.instance = p.SQLParser('file_not_here')
         self.assertRaises(IOError, SQLParserTest.instance.text)
 
-    def test_index_of_substring(self):
+    def test_index_of_substring_from(self):
     	self.assertEqual((491,491 + len('FROM')), SQLParserTest.instance.index_of_substring('FROM'))
+
+    def test_index_of_substring_where(self):
+        self.assertEqual((886, 886 + len('WHERE')),SQLParserTest.instance.index_of_substring('WHERE'))
 
