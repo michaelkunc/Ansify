@@ -21,6 +21,11 @@ class SQLParser(object):
         return (begin_index, end_index)
 
     def store_tables_and_aliases(self):
-        tables_and_aliases = self.text[self.from_location[1]:self.where_location[0]]
-        tables_and_aliases_list = [t.replace('\n','').strip() for t in tables_and_aliases.split(',')]
-        return tables_and_aliases_list
+        tables_and_aliases = self.text[
+            self.from_location[1]:self.where_location[0]]
+        return {t.replace('\n','').strip().split(' ')[1]: t.replace('\n','').strip().split(' ')[0] for t in tables_and_aliases.split(',')}
+
+    def store_where_clause(self):
+        where_clause = self.text[self.where_location[1]:]
+        return [w.replace('\n','').strip() for w in where_clause.split('AND')]
+
