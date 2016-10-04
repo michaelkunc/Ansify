@@ -32,3 +32,6 @@ class SQLParserTest(unittest.TestCase):
     def test_store_where_clause_type(self):
         self.assertEqual(list, type(SQLParserTest.ins.store_where_clause()))
 
+    def test_store_where_clause_values(self):
+        self.assertEqual('PEIA.EXPENDITURE_ITEM_ID = PDIDA.EXPENDITURE_ITEM_ID(+)', SQLParserTest.ins.store_where_clause()[5])
+
