@@ -29,3 +29,7 @@ class SQLParser(object):
         where_clause = self.text[self.where_location[1]:]
         return [w.replace('\n','').strip() for w in where_clause.split('AND')]
 
+    def evaluate_where_condition(self, where_condition):
+        tables_and_aliases = self.store_tables_and_aliases()
+        return all( k in where_condition for k in tables_and_aliases.keys())
+
