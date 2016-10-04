@@ -35,5 +35,11 @@ class SQLParserTest(unittest.TestCase):
     def test_store_where_clause_values(self):
         self.assertEqual('PEIA.EXPENDITURE_ITEM_ID = PDIDA.EXPENDITURE_ITEM_ID(+)', SQLParserTest.ins.store_where_clause()[5])
 
-    def test_evaluate_where_condition(self):
+    def test_evaluate_where_condition_both_true(self):
         self.assertEqual(True, SQLParserTest.ins.evaluate_where_condition('PEIA.EXPENDITURE_ITEM_ID = PDIDA.EXPENDITURE_ITEM_ID(+)'))
+
+    def test_evaluatate_where_condition_one_false(self):
+        self.assertEqual(False, SQLParserTest.ins.evaluate_where_condition('PEIA.EXPENDITURE_ITEM_ID = 111232'))
+
+    def test_evaluate_where_condition_both_false(self):
+        self.assertEqual(False, SQLParserTest.ins.evaluate_where_condition('1=1'))

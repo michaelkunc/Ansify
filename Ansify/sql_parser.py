@@ -31,5 +31,4 @@ class SQLParser(object):
 
     def evaluate_where_condition(self, where_condition):
         tables_and_aliases = self.store_tables_and_aliases()
-        return all( k in where_condition for k in tables_and_aliases.keys())
-
+        return any( k in where_condition for k in tables_and_aliases.keys())
