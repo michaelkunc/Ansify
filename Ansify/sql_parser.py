@@ -23,12 +23,19 @@ class SQLParser(object):
     def store_tables_and_aliases(self):
         tables_and_aliases = self.text[
             self.from_location[1]:self.where_location[0]]
-        return {t.replace('\n','').strip().split(' ')[1]: t.replace('\n','').strip().split(' ')[0] for t in tables_and_aliases.split(',')}
+        return {t.replace('\n', '').strip().split(' ')[1]: t.replace('\n', '').strip().split(' ')[0] for t in tables_and_aliases.split(',')}
 
     def store_where_clause(self):
         where_clause = self.text[self.where_location[1]:]
-        return [w.replace('\n','').strip() for w in where_clause.split('AND')]
+        return [w.replace('\n', '').strip() for w in where_clause.split('AND')]
+
+    def parse_where_condition_tables(self, where_condition):
+        return [i.split('.',1)[0].strip() for i in where_condition.split('=')]
+
 
     def evaluate_where_condition(self, where_condition):
         tables_and_aliases = self.store_tables_and_aliases()
-        return any( k in where_condition for k in tables_and_aliases.keys())
+        return any(k in where_condition for k in tables_and_aliases.keys())
+        # this is testing if ANY of the KEYS (re; table aliases) are in the where_conditin
+        # I actually need to know if BOTH the sides of the where condition are contained
+        # in any of the keys
