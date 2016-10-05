@@ -7,6 +7,7 @@ class SQLParser(object):
         self.text = self.open_file(file_name)
         self.from_location = self.substring_location('FROM')
         self.where_location = self.substring_location('WHERE')
+        self.tables_and_aliases = self.store_tables_and_aliases()
 
     def open_file(self, file_name):
         try:
@@ -33,14 +34,19 @@ class SQLParser(object):
         return [i.split('.', 1)[0].strip() for i in where_condition.split('=')]
 
     def evaluate_where_condition(self, where_condition):
-        tables_and_aliases = self.store_tables_and_aliases()
         where_condition_tables = self.parse_where_condition_tables(where_condition)
-        return set(where_condition_tables) < set(tables_and_aliases)
+        return set(where_condition_tables) < set(self.tables_and_aliases)
 
     def determine_join_type(self, where_condition):
-        if '(+)' in where_condition and where_condition[-3:] == '(+)':
+        join_operator = '(+)'
+        if join_operator in where_condition and where_condition[-len(join_operator):] == join_operator:
             return 'LEFT OUTER JOIN'
-        elif '(+)' in where_condition:
+        elif join_operator in where_condition:
             return 'RIGHT OUTER JOIN'
         else:
             return 'INNER JOIN'
+
+    # def create_join_statement(self, where_condition):
+        
+        
+
