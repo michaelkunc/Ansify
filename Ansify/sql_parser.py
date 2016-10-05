@@ -37,8 +37,8 @@ class SQLParser(object):
         where_condition_tables = self.parse_where_condition_tables(where_condition)
         return set(where_condition_tables) < set(tables_and_aliases)
 
-    # def determine_join_type(self, where_condition):
-    #     if where_condition.contains('(+)'):
-    #         return 'OUTER JOIN'
-    #     else:
-    #         return 'INNER JOIN'
+    def determine_join_type(self, where_condition):
+        if '(+)' in where_condition:
+            return 'OUTER JOIN'
+        else:
+            return 'INNER JOIN'
