@@ -58,6 +58,8 @@ class SQLParserTest(unittest.TestCase):
     def test_determine_join_type_inner(self):
         self.assertEqual('INNER JOIN', SQLParserTest.ins.determine_join_type('PEIA.EXPENDITURE_ITEM_ID = PDIDA.EXPENDITURE_ITEM_ID'))
 
-    def test_determine_join_type_outer(self):
-        self.assertEqual('OUTER JOIN', SQLParserTest.ins.determine_join_type(SQLParserTest.where))
+    def test_determine_join_type_left_outer(self):
+        self.assertEqual('LEFT OUTER JOIN', SQLParserTest.ins.determine_join_type(SQLParserTest.where))
 
+    def test_determine_join_type_right_out(self):
+        self.assertEqual('RIGHT OUTER JOIN', SQLParserTest.ins.determine_join_type('PEIA.EXPENDITURE_ITEM_ID(+) = PDIDA.EXPENDITURE_ITEM_ID'))
