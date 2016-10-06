@@ -46,7 +46,12 @@ class SQLParser(object):
         else:
             return 'INNER JOIN'
 
-    # def create_join_statement(self, where_condition):
-        
-        
+    def create_join_statement(self, where_condition):
+        first_table = self.tables_and_aliases[self.parse_where_condition_tables(where_condition)[0]]
+        second_table = self.tables_and_aliases[self.parse_where_condition_tables(where_condition)[1]]
+        join_type = self.determine_join_type(where_condition)
+        return ''.join([first_table, '\n',join_type,'\n',second_table, ' ON ', where_condition]) 
 
+
+    def create_select_statement(self):
+        return self.text[0:self.from_location[0]]
