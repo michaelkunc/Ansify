@@ -73,4 +73,8 @@ class SQLParserTest(unittest.TestCase):
 
     def test_create_select_statement(self):
         test_ins = p.SQLParser('short_test_doc.sql')
-        self.assertEqual("SELECT DISTINCT \nRCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \nPEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\n",test_ins.create_select_statement())
+        self.assertEqual("SELECT DISTINCT \nRCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \nPEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\n",
+                         test_ins.create_select_statement())
+
+    def test_build_select_from(self):
+        self.assertEqual('Stuff', SQLParserTest.ins.build_select_from())
