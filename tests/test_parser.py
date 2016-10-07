@@ -77,4 +77,5 @@ class SQLParserTest(unittest.TestCase):
                          test_ins.create_select_statement())
 
     def test_build_select_from(self):
-        self.assertEqual('Stuff', SQLParserTest.ins.build_select_from())
+        test_ins = p.SQLParser('short_test_doc.sql')
+        self.assertEqual('is this thing on?', test_ins.build_select_from())
