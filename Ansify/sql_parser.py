@@ -36,7 +36,7 @@ class SQLParser(object):
     def evaluate_where_condition(self, where_condition):
         where_condition_tables = self.parse_where_condition_tables(
             where_condition)
-        return set(where_condition_tables) < set(self.tables_and_aliases)
+        return set(where_condition_tables) <= set(self.tables_and_aliases)
 
     def determine_join_type(self, where_condition):
         join_operator = '(+)'
@@ -63,11 +63,9 @@ class SQLParser(object):
         temp_var = []
         for w in self.store_where_clause():
             #the evaluation is not correct. Returning false for both conditions
-            temp_var.append(self.evaluate_where_condition(w))
-        #     if self.evaluate_where_condition(w):
-        #         temp_var.append(self.create_join_statement(w))
-        #     else:
-        #         temp_var.append('I DON"T THINK THIS WORKED')
-        # temp_var = ''.join(temp_var)
-        # return ''.join([select, temp_var])
-        return temp_var
+            if self.evaluate_where_condition(w):
+                temp_var.append(self.create_join_statement(w))
+            else:
+                temp_var.append('I DON"T THINK THIS WORKED')
+        temp_var = ''.join(temp_var)
+        return ''.join([select, temp_var])
