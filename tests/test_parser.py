@@ -78,13 +78,20 @@ class SQLParserTest(unittest.TestCase):
 
     def test_build_select_from(self):
         test_ins = p.SQLParser('short_test_doc.sql')
-        self.assertEqual('is this thing on?', test_ins.build_select_from())
+        statement = ("SELECT DISTINCT \n"
+                     "RCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \n"
+                     "PEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID \n\n"
+                     "TABLE1 \n"
+                     "INNER JOIN \n"
+                     "TABLE2 ON RCTLGDA.EXPENDITURE_ITEM_ID = PEIA.EXPENDITURE_ITEM_ID \n"
+                     "WHERE RCTLGDA.TRANSACTION_TYPE='CAPITAL")
+        self.assertEqual(statement, test_ins.build_select_from())
 
 
     def test_build_where(self):
         test_ins = p.SQLParser('short_test_doc.sql')
         where = ["RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'"]
-        self.assertEqual("WHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'", test_ins.build_where(where))
+        self.assertEqual("\nWHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'", test_ins.build_where(where))
 
 #     def test_evaluate_where_condition_short_file_diagnostic(self):
 #         test_ins = p.SQLParser('short_test_doc.sql')

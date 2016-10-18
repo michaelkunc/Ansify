@@ -67,7 +67,7 @@ class SQLParser(object):
                 joins.append(self.create_join_statement(w))
             else:
                 where.append(w)
-        return ''.join([select, ''.join(joins), ''.join(where)])
+        return ''.join([select, ''.join(joins), self.build_where(where)])
 
     def build_where(self, where_conditions):
-        return 'WHERE '+ 'and'.join(where_conditions)
+        return '\nWHERE '+ 'and'.join(where_conditions)
