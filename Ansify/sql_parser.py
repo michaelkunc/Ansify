@@ -60,12 +60,11 @@ class SQLParser(object):
 
     def build_select_from(self):
         select = self.create_select_statement()
-        temp_var = []
+        joins = []
+        where = []
         for w in self.store_where_clause():
-            #the evaluation is not correct. Returning false for both conditions
             if self.evaluate_where_condition(w):
-                temp_var.append(self.create_join_statement(w))
+                joins.append(self.create_join_statement(w))
             else:
-                temp_var.append('I DON"T THINK THIS WORKED')
-        temp_var = ''.join(temp_var)
-        return ''.join([select, temp_var])
+                where.append(w)
+        return ''.join([select, ''.join(joins), ''.join(where)])
