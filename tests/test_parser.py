@@ -80,6 +80,12 @@ class SQLParserTest(unittest.TestCase):
         test_ins = p.SQLParser('short_test_doc.sql')
         self.assertEqual('is this thing on?', test_ins.build_select_from())
 
+
+    def test_build_where(self):
+        test_ins = p.SQLParser('short_test_doc.sql')
+        where = ["RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'"]
+        self.assertEqual("WHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'", test_ins.build_where(where))
+
 #     def test_evaluate_where_condition_short_file_diagnostic(self):
 #         test_ins = p.SQLParser('short_test_doc.sql')
 #         where_clause = test_ins.store_where_clause()
