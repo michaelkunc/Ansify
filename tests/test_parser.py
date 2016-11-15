@@ -75,17 +75,18 @@ class SQLParserTest(unittest.TestCase):
         test_ins = p.SQLParser('short_test_doc.sql')
         self.assertEqual("SELECT DISTINCT \nRCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \nPEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\n",
                          test_ins.create_select_statement())
-
+#this needs to have the "FROM" in select from
     def test_build_select_from(self):
         test_ins = p.SQLParser('short_test_doc.sql')
         statement = ("SELECT DISTINCT \n"
                      "RCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \n"
                      "PEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\n"
+                    #FROM
                      "TABLE_1\n"
-                     "INNER JOIN\n")
-                     # "TABLE_2 ON RCTLGDA.EXPENDITURE_ITEM_ID = PEIA.EXPENDITURE_ITEM_ID\n"
-                     # "WHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL")
-        self.assertEqual(statement, test_ins.build_select_from()[0:122])
+                     "INNER JOIN\n"
+                     "TABLE_2 ON RCTLGDA.EXPENDITURE_ITEM_ID = PEIA.EXPENDITURE_ITEM_ID\n"
+                     "WHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'")
+        self.assertEqual(statement, test_ins.build_select_from())
 
 
     def test_build_where(self):
