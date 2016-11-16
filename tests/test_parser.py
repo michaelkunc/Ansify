@@ -24,13 +24,13 @@ class SQLParserTest(unittest.TestCase):
         self.assertEqual((884, 884 + len('WHERE')),
                          SQLParserTest.ins.substring_location('WHERE'))
 
-    def test_store_tables_and_aliases_type(self):
+    def test_tables_aliases_type(self):
         self.assertEqual(dict, type(
-            SQLParserTest.ins.store_tables_and_aliases()))
+            SQLParserTest.ins.tables_aliases))
 
-    def test_store_tables_and_aliases_values(self):
+    def test_tables_aliases_values(self):
         self.assertEqual('APPS.PA_EXPENDITURE_ITEMS_ALL',
-                         SQLParserTest.ins.store_tables_and_aliases()['PEIA'])
+                         SQLParserTest.ins.tables_aliases['PEIA'])
 
     def test_store_where_clause_type(self):
         self.assertEqual(list, type(SQLParserTest.ins.store_where_clause()))
@@ -39,8 +39,8 @@ class SQLParserTest(unittest.TestCase):
         self.assertEqual(SQLParserTest.where,
                          SQLParserTest.ins.store_where_clause()[5])
 
-    def test_parse_where_condition_table(self):
-        self.assertEqual(['PEIA', 'PDIDA'], SQLParserTest.ins.parse_where_condition_tables(
+    def test_where_tables(self):
+        self.assertEqual(['PEIA', 'PDIDA'], SQLParserTest.ins.where_tables(
             'PEIA.EXPENDITURE_ITEM_ID = PDIDA.EXPENDITURE_ITEM_ID(+)'))
 
     def test_evaluate_where_condition_both_true(self):
@@ -69,7 +69,7 @@ class SQLParserTest(unittest.TestCase):
 
     def test_create_join_statement(self):
         self.assertEqual('APPS.PA_EXPENDITURE_ITEMS_ALL\nLEFT OUTER JOIN\nAPPS.PA_DRAFT_INVOICE_DETAILS_ALL ON PEIA.EXPENDITURE_ITEM_ID = PDIDA.EXPENDITURE_ITEM_ID(+)',
-                         SQLParserTest.ins.create_join_statement(SQLParserTest.where))
+                         SQLParserTest.ins.create_joins(SQLParserTest.where))
 
     def test_create_select_statement(self):
         test_ins = p.SQLParser('short_test_doc.sql')
