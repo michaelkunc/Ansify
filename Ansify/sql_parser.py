@@ -38,7 +38,7 @@ class SQLParser(object):
             where_condition)
         return set(where_condition_tables) <= set(self.tables_and_aliases)
 
-    def determine_join_type(self, where_condition):
+    def determine_join(self, where_condition):
         join_operator = '(+)'
         if join_operator in where_condition and where_condition[-len(join_operator):] == join_operator:
             return 'LEFT OUTER JOIN'
@@ -52,7 +52,7 @@ class SQLParser(object):
             self.parse_where_condition_tables(where_condition)[0]]
         second_table = self.tables_and_aliases[
             self.parse_where_condition_tables(where_condition)[1]]
-        join_type = self.determine_join_type(where_condition)
+        join_type = self.determine_join(where_condition)
         return ''.join([first_table, '\n', join_type, '\n', second_table, ' ON ', where_condition])
 
     def create_select_statement(self):
@@ -67,7 +67,7 @@ class SQLParser(object):
                 joins.append(self.create_join_statement(w))
             else:
                 where.append(w)
-        return ''.join([select, ''.join(joins), self.build_where(where)])
+        return ''.join([select, 'FROM\n', ''.join(joins), self.build_where(where)])
 
     def build_where(self, where_conditions):
-        return '\nWHERE '+ 'and'.join(where_conditions)
+        return '\nWHERE ' + 'and'.join(where_conditions)

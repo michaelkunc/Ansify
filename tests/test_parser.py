@@ -55,16 +55,16 @@ class SQLParserTest(unittest.TestCase):
         self.assertEqual(
             False, SQLParserTest.ins.evaluate_where_condition('1=1'))
 
-    def test_determine_join_type_inner(self):
-        self.assertEqual('INNER JOIN', SQLParserTest.ins.determine_join_type(
+    def test_determine_join_inner(self):
+        self.assertEqual('INNER JOIN', SQLParserTest.ins.determine_join(
             'PEIA.EXPENDITURE_ITEM_ID = PDIDA.EXPENDITURE_ITEM_ID'))
 
-    def test_determine_join_type_left_outer(self):
+    def test_determine_join_left_outer(self):
         self.assertEqual(
-            'LEFT OUTER JOIN', SQLParserTest.ins.determine_join_type(SQLParserTest.where))
+            'LEFT OUTER JOIN', SQLParserTest.ins.determine_join(SQLParserTest.where))
 
-    def test_determine_join_type_right_out(self):
-        self.assertEqual('RIGHT OUTER JOIN', SQLParserTest.ins.determine_join_type(
+    def test_determine_join_right_out(self):
+        self.assertEqual('RIGHT OUTER JOIN', SQLParserTest.ins.determine_join(
             'PEIA.EXPENDITURE_ITEM_ID(+) = PDIDA.EXPENDITURE_ITEM_ID'))
 
     def test_create_join_statement(self):
@@ -75,27 +75,21 @@ class SQLParserTest(unittest.TestCase):
         test_ins = p.SQLParser('short_test_doc.sql')
         self.assertEqual("SELECT DISTINCT \nRCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \nPEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\n",
                          test_ins.create_select_statement())
-#this needs to have the "FROM" in select from
+
     def test_build_select_from(self):
         test_ins = p.SQLParser('short_test_doc.sql')
         statement = ("SELECT DISTINCT \n"
                      "RCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \n"
                      "PEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\n"
-                    #FROM
+                     "FROM\n"
                      "TABLE_1\n"
                      "INNER JOIN\n"
                      "TABLE_2 ON RCTLGDA.EXPENDITURE_ITEM_ID = PEIA.EXPENDITURE_ITEM_ID\n"
                      "WHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'")
         self.assertEqual(statement, test_ins.build_select_from())
 
-
     def test_build_where(self):
         test_ins = p.SQLParser('short_test_doc.sql')
         where = ["RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'"]
-        self.assertEqual("\nWHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'", test_ins.build_where(where))
-
-#     def test_evaluate_where_condition_short_file_diagnostic(self):
-#         test_ins = p.SQLParser('short_test_doc.sql')
-#         where_clause = test_ins.store_where_clause()
-#         self.assertEqual('something', set(test_ins.parse_where_condition_tables(where_clause[1])) <= set(test_ins.tables_and_aliases.keys()))
-# #above test shows that evaluate_where_condition() is not working properly
+        self.assertEqual(
+            "\nWHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'", test_ins.build_where(where))
