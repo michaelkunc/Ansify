@@ -37,18 +37,16 @@ class SQLParser(object):
         else:
             return 'INNER JOIN'
 
-    def create_joins(self, where_condition):
-        first_table = self.tables_aliases[
-            self.where_tables(where_condition)[0]]
-        second_table = self.tables_aliases[
-            self.where_tables(where_condition)[1]]
+    def build_joins(self, where_condition):
+        table_1 = self.tables_aliases[self.where_tables(where_condition)[0]]
+        table_2 = self.tables_aliases[self.where_tables(where_condition)[1]]
         join_type = self.determine_join(where_condition)
-        return ''.join([first_table, '\n', join_type, '\n', second_table, ' ON ', where_condition])
+        return ''.join([table_1, '\n', join_type, '\n', table_2, ' ON ', where_condition])
 
     def build_select_from(self):
-        joins = [self.create_joins(w) for w in self.where_clause() if self.evaluate_where(w)]
+        joins = [self.build_joins(w) for w in self.where_clause() if self.evaluate_where(w)]
         where = [w for w in self.where_clause() if not self.evaluate_where(w)]
-        return ''.join([self.select, 'FROM\n', ''.join(joins), self.build_where(where)])
+        return ''.join([self.select, '\n', ''.join(joins), self.build_where(where)])
 
     def build_where(self, where_conditions):
         return '\nWHERE ' + 'and'.join(where_conditions)
@@ -61,4 +59,4 @@ class SQLParser(object):
 
     @property
     def select(self):
-        return self.text[0:self.from_location[0]]
+        return self.text[0:self.from_location[1]]

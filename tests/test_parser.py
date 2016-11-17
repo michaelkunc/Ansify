@@ -67,13 +67,13 @@ class SQLParserTest(unittest.TestCase):
         self.assertEqual('RIGHT OUTER JOIN', SQLParserTest.ins.determine_join(
             'PEIA.EXPENDITURE_ITEM_ID(+) = PDIDA.EXPENDITURE_ITEM_ID'))
 
-    def test_create_join_statement(self):
+    def test_build_joins(self):
         self.assertEqual('APPS.PA_EXPENDITURE_ITEMS_ALL\nLEFT OUTER JOIN\nAPPS.PA_DRAFT_INVOICE_DETAILS_ALL ON PEIA.EXPENDITURE_ITEM_ID = PDIDA.EXPENDITURE_ITEM_ID(+)',
-                         SQLParserTest.ins.create_joins(SQLParserTest.where))
+                         SQLParserTest.ins.build_joins(SQLParserTest.where))
 
-    def test_create_select_statement(self):
+    def test_select(self):
         test_ins = p.SQLParser('short_test_doc.sql')
-        self.assertEqual("SELECT DISTINCT \nRCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \nPEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\n",
+        self.assertEqual("SELECT DISTINCT \nRCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \nPEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\nFROM",
                          test_ins.select)
 
     def test_build_select_from(self):
