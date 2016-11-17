@@ -33,11 +33,11 @@ class SQLParserTest(unittest.TestCase):
                          SQLParserTest.ins.tables_aliases['PEIA'])
 
     def test_store_where_clause_type(self):
-        self.assertEqual(list, type(SQLParserTest.ins.store_where_clause()))
+        self.assertEqual(list, type(SQLParserTest.ins.where_clause()))
 
     def test_store_where_clause_values(self):
         self.assertEqual(SQLParserTest.where,
-                         SQLParserTest.ins.store_where_clause()[5])
+                         SQLParserTest.ins.where_clause()[5])
 
     def test_where_tables(self):
         self.assertEqual(['PEIA', 'PDIDA'], SQLParserTest.ins.where_tables(
@@ -45,15 +45,15 @@ class SQLParserTest(unittest.TestCase):
 
     def test_evaluate_where_condition_both_true(self):
         self.assertEqual(
-            True, SQLParserTest.ins.evaluate_where_condition(SQLParserTest.where))
+            True, SQLParserTest.ins.evaluate_where(SQLParserTest.where))
 
     def test_evaluatate_where_condition_one_false(self):
-        self.assertEqual(False, SQLParserTest.ins.evaluate_where_condition(
+        self.assertEqual(False, SQLParserTest.ins.evaluate_where(
             'PEIA.EXPENDITURE_ITEM_ID = 111232'))
 
     def test_evaluate_where_condition_both_false(self):
         self.assertEqual(
-            False, SQLParserTest.ins.evaluate_where_condition('1=1'))
+            False, SQLParserTest.ins.evaluate_where('1=1'))
 
     def test_determine_join_inner(self):
         self.assertEqual('INNER JOIN', SQLParserTest.ins.determine_join(
@@ -74,7 +74,7 @@ class SQLParserTest(unittest.TestCase):
     def test_create_select_statement(self):
         test_ins = p.SQLParser('short_test_doc.sql')
         self.assertEqual("SELECT DISTINCT \nRCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \nPEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\n",
-                         test_ins.create_select_statement())
+                         test_ins.select)
 
     def test_build_select_from(self):
         test_ins = p.SQLParser('short_test_doc.sql')
