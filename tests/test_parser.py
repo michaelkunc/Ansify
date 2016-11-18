@@ -32,12 +32,12 @@ class SQLParserTest(unittest.TestCase):
         self.assertEqual('APPS.PA_EXPENDITURE_ITEMS_ALL',
                          SQLParserTest.ins.tables_aliases['PEIA'])
 
-    def test_store_where_clause_type(self):
-        self.assertEqual(list, type(SQLParserTest.ins.where_clause()))
+    def test_where_clause_type(self):
+        self.assertEqual(list, type(SQLParserTest.ins.where_clause))
 
-    def test_store_where_clause_values(self):
+    def test_where_clause_values(self):
         self.assertEqual(SQLParserTest.where,
-                         SQLParserTest.ins.where_clause()[5])
+                         SQLParserTest.ins.where_clause[5])
 
     def test_where_tables(self):
         self.assertEqual(['PEIA', 'PDIDA'], SQLParserTest.ins.where_tables(

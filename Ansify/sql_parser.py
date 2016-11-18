@@ -8,6 +8,7 @@ class SQLParser(object):
         self.from_location = self.substring_location('FROM')
         self.where_location = self.substring_location('WHERE')
 
+
     def open_file(self, file_name):
         try:
             with open(file_name) as f:
@@ -17,10 +18,6 @@ class SQLParser(object):
 
     def substring_location(self, substring):
         return (self.text.find(substring), self.text.find(substring) + len(substring))
-
-    def where_clause(self):
-        where_clause = self.text[self.where_location[1]:]
-        return [w.replace('\n', '').strip() for w in where_clause.split('AND')]
 
     def where_tables(self, where_condition):
         return [i.split('.', 1)[0].strip() for i in where_condition.split('=')]
@@ -44,8 +41,9 @@ class SQLParser(object):
         return ''.join([table_1, '\n', join_type, '\n', table_2, ' ON ', where_condition])
 
     def build_select_from(self):
-        joins = [self.build_joins(w) for w in self.where_clause() if self.evaluate_where(w)]
-        where = [w for w in self.where_clause() if not self.evaluate_where(w)]
+        joins = [self.build_joins(w)
+                 for w in self.where_clause if self.evaluate_where(w)]
+        where = [w for w in self.where_clause if not self.evaluate_where(w)]
         return ''.join([self.select, '\n', ''.join(joins), self.build_where(where)])
 
     def build_where(self, where_conditions):
@@ -60,3 +58,7 @@ class SQLParser(object):
     @property
     def select(self):
         return self.text[0:self.from_location[1]]
+
+    @property
+    def where_clause(self):
+        return [w.replace('\n', '').strip() for w in self.text[self.where_location[1]:].split('AND')]
