@@ -13,9 +13,8 @@ class SQLParser(object):
         except IOError:
             print "File not found"
 
-
     def where_tables(self, where_condition):
-        return [i.split('.', 1)[0].strip() for i in where_condition.split('=')]
+        return [i.split('.')[0].strip() for i in where_condition.split('=')]
 
     def evaluate_where(self, where_condition):
         return set(self.where_tables(where_condition)) <= set(self.tables)
@@ -30,10 +29,9 @@ class SQLParser(object):
             return 'INNER JOIN'
 
     def build_joins(self, where_condition):
-        table_1 = self.tables[self.where_tables(where_condition)[0]]
-        table_2 = self.tables[self.where_tables(where_condition)[1]]
+        tables = [self.tables[t] for t in self.where_tables(where_condition)]
         join_type = self.determine_join(where_condition)
-        return ''.join([table_1, '\n', join_type, '\n', table_2, ' ON ', where_condition])
+        return ''.join([tables[0], '\n', join_type, '\n', tables[1], ' ON ', where_condition])
 
     def build_statement(self):
         joins = [self.build_joins(w)
