@@ -8,7 +8,6 @@ class SQLParser(object):
         self.from_location = self.substring_location('FROM')
         self.where_location = self.substring_location('WHERE')
 
-
     def open_file(self, file_name):
         try:
             with open(file_name) as f:
@@ -40,7 +39,7 @@ class SQLParser(object):
         join_type = self.determine_join(where_condition)
         return ''.join([table_1, '\n', join_type, '\n', table_2, ' ON ', where_condition])
 
-    def build_select_from(self):
+    def build_statement(self):
         joins = [self.build_joins(w)
                  for w in self.where_clause if self.evaluate_where(w)]
         where = [w for w in self.where_clause if not self.evaluate_where(w)]
