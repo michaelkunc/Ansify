@@ -16,21 +16,13 @@ class SQLParserTest(unittest.TestCase):
     #     SQLParserTest.ins = p.SQLParser('file_not_here')
     #     self.assertRaises(IOError, SQLParserTest.ins.text)
 
-    def test_index_of_substring_from(self):
-        self.assertEqual((489, 489 + len('FROM')),
-                         SQLParserTest.ins.substring_location('FROM'))
-
-    def test_index_of_substring_where(self):
-        self.assertEqual((884, 884 + len('WHERE')),
-                         SQLParserTest.ins.substring_location('WHERE'))
 
     def test_tables_aliases_type(self):
-        self.assertEqual(dict, type(
-            SQLParserTest.ins.tables_aliases))
+        self.assertEqual(dict, type(SQLParserTest.ins.tables))
 
     def test_tables_aliases_values(self):
         self.assertEqual('APPS.PA_EXPENDITURE_ITEMS_ALL',
-                         SQLParserTest.ins.tables_aliases['PEIA'])
+                         SQLParserTest.ins.tables['PEIA'])
 
     def test_where_clause_type(self):
         self.assertEqual(list, type(SQLParserTest.ins.where_clause))
@@ -73,7 +65,7 @@ class SQLParserTest(unittest.TestCase):
 
     def test_select(self):
         test_ins = p.SQLParser('short_test_doc.sql')
-        self.assertEqual("SELECT DISTINCT \nRCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \nPEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\nFROM",
+        self.assertEqual("SELECT DISTINCT \nRCTLGDA.CUSTOMER_TRX_ID AS CUSTOMER_TRX_ID, \nPEIA.EXPENDITURE_ITEM_ID AS PA_TRANS_ID\n\n",
                          test_ins.select)
 
     def test_build_statement(self):
@@ -87,12 +79,6 @@ class SQLParserTest(unittest.TestCase):
                      "TABLE_2 ON RCTLGDA.EXPENDITURE_ITEM_ID = PEIA.EXPENDITURE_ITEM_ID\n"
                      "WHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'")
         self.assertEqual(statement, test_ins.build_statement())
-
-    # def test_build_where(self):
-    #     test_ins = p.SQLParser('short_test_doc.sql')
-    #     where = ["RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'"]
-    #     self.assertEqual(
-    #         "\nWHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'", test_ins.build_where(where))
 
     # def test_from_clause(self):
     #     self.assertEqual('BUTT', SQLParserTest.ins.from_clause)
