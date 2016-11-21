@@ -88,8 +88,11 @@ class SQLParserTest(unittest.TestCase):
                      "WHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'")
         self.assertEqual(statement, test_ins.build_statement())
 
-    def test_build_where(self):
-        test_ins = p.SQLParser('short_test_doc.sql')
-        where = ["RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'"]
-        self.assertEqual(
-            "\nWHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'", test_ins.build_where(where))
+    # def test_build_where(self):
+    #     test_ins = p.SQLParser('short_test_doc.sql')
+    #     where = ["RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'"]
+    #     self.assertEqual(
+    #         "\nWHERE RCTLGDA.TRANSACTION_TYPE = 'CAPITAL'", test_ins.build_where(where))
+
+    # def test_from_clause(self):
+    #     self.assertEqual('BUTT', SQLParserTest.ins.from_clause)

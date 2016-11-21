@@ -43,20 +43,19 @@ class SQLParser(object):
         joins = [self.build_joins(w)
                  for w in self.where_clause if self.evaluate_where(w)]
         where = [w for w in self.where_clause if not self.evaluate_where(w)]
-        return ''.join([self.select, '\n', ''.join(joins), self.build_where(where)])
-
-    def build_where(self, where_conditions):
-        return '\nWHERE ' + 'and'.join(where_conditions)
+        return ''.join([self.select, '\n', ''.join(joins), '\nWHERE ', 'and'.join(where)])
 
     @property
     def tables_aliases(self):
-        tables_aliases = self.text[
-            self.from_location[1]:self.where_location[0]]
-        return {t.replace('\n', '').strip().split(' ')[1]: t.replace('\n', '').strip().split(' ')[0] for t in tables_aliases.split(',')}
+        return {t.replace('\n', '').strip().split(' ')[1]: t.replace('\n', '').strip().split(' ')[0] for t in self.from_clause.split(',')}
 
     @property
     def select(self):
         return self.text[0:self.from_location[1]]
+
+    @property
+    def from_clause(self):
+        return self.text[self.from_location[1]:self.where_location[0]]
 
     @property
     def where_clause(self):
