@@ -10,11 +10,11 @@ class SQLParserTest(unittest.TestCase):
         SQLParserTest.where = 'PEIA.EXPENDITURE_ITEM_ID = PDIDA.EXPENDITURE_ITEM_ID(+)'
 
     def test_init(self):
-        self.assertEqual(1165, len(SQLParserTest.ins.text))
+        self.assertEqual(1165, len(SQLParserTest.ins.txt))
 
     # def test_init_error_handling(self):
     #     SQLParserTest.ins = p.SQLParser('file_not_here')
-    #     self.assertRaises(IOError, SQLParserTest.ins.text)
+    #     self.assertRaises(IOError, SQLParserTest.ins.txt)
 
 
     def test_tables_aliases_type(self):

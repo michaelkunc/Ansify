@@ -4,7 +4,7 @@ import os
 class SQLParser(object):
 
     def __init__(self, file_name):
-        self.text = self.open_file(file_name)
+        self.txt = self.open_file(file_name)
 
     def open_file(self, file_name):
         try:
@@ -34,21 +34,27 @@ class SQLParser(object):
         return ''.join([tables[0], '\n', join_type, '\n', tables[1], ' ON ', where_condition])
 
     def build_statement(self):
-        joins = [self.build_joins(w)
-                 for w in self.where_clause if self.evaluate_where(w)]
-        where = [w for w in self.where_clause if not self.evaluate_where(w)]
+        joins, where = [], []
+        for w in self.where_clause:
+            if self.evaluate_where(w):
+                joins.append(self.build_joins(w))
+            else:
+                where.append(w) 
+        # joins = [self.build_joins(w)
+        #          for w in self.where_clause if self.evaluate_where(w)]
+        # where = [w for w in self.where_clause if not self.evaluate_where(w)]
         return ''.join([self.select, 'FROM', '\n', ''.join(joins), '\nWHERE ', 'and'.join(where)])
 
     @property
     def tables(self):
-        from_clause = self.text[self.text.index(
-            'FROM') + len('FROM'):self.text.find('WHERE')]
+        from_clause = self.txt[self.txt.index(
+            'FROM') + len('FROM'):self.txt.find('WHERE')]
         return {t.replace('\n', '').strip().split(' ')[1]: t.replace('\n', '').strip().split(' ')[0] for t in from_clause.split(',')}
 
     @property
     def select(self):
-        return self.text[0:self.text.find('FROM')]
+        return self.txt[0:self.txt.find('FROM')]
 
     @property
     def where_clause(self):
-        return [w.replace('\n', '').strip() for w in self.text[self.text.index('WHERE') + len('WHERE'):].split('AND')]
+        return [w.replace('\n', '').strip() for w in self.txt[self.txt.index('WHERE') + len('WHERE'):].split('AND')]
