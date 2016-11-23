@@ -21,7 +21,7 @@ class SQLParser(object):
 
     def determine_join(self, where_condition):
         operator = '(+)'
-        if operator in where_condition and where_condition[-len(operator):] == operator:
+        if where_condition.endswith(operator):    
             return 'LEFT OUTER JOIN'
         elif operator in where_condition:
             return 'RIGHT OUTER JOIN'
@@ -40,9 +40,6 @@ class SQLParser(object):
                 joins.append(self.build_joins(w))
             else:
                 where.append(w) 
-        # joins = [self.build_joins(w)
-        #          for w in self.where_clause if self.evaluate_where(w)]
-        # where = [w for w in self.where_clause if not self.evaluate_where(w)]
         return ''.join([self.select, 'FROM', '\n', ''.join(joins), '\nWHERE ', 'and'.join(where)])
 
     @property
